@@ -4,10 +4,10 @@ import java.util.Scanner;
 public class Duke {
     private static final String LINE = "____________________________________________________________";
     private static final String INDENT = "    ";
-    private static final Scanner SCANNER = new Scanner(System.in);
     private static final String MESSAGE_GOODBYE = "Bye. Hope to see you again soon!";
     private static final String COMMAND_EXIT_STRING = "bye";
     private static final String COMMAND_LIST_STRING = "list";
+    private static final Scanner SCANNER = new Scanner(System.in);
     private static final int Capacity = 50;
     private static int contentCount = 0;
     private static String[] contents = new String[Capacity];
@@ -25,7 +25,7 @@ public class Duke {
         if (content != null) {
             System.out.println(INDENT + content);
         }
-        System.out.println(INDENT + LINE);
+        System.out.println(INDENT + LINE + "\n");
     }
 
     private static void wellcomeMessage() {
@@ -78,6 +78,6 @@ public class Duke {
     private static void addContent(String inputContent) {
         contents[contentCount] = inputContent;
         contentCount++;
-        UiDisplay(inputContent);
+        UiDisplay("added: " + inputContent);
     }
 }

@@ -4,15 +4,18 @@ public class Duke {
     private static final String LINE = "____________________________________________________________";
     private static final String INDENT = "    ";
     private static final String MESSAGE_GOODBYE = "Bye. Hope to see you again soon!";
-    private static final String LIST_MESSAGE = "Here are the tasks in your list:\n"+ INDENT + "1.[✓] read book\n" + INDENT + "2.[✗] return book\n" + INDENT + "3.[✗] buy bread";
+    private static final String LIST_MESSAGE = "Here are the tasks in your list:\n"
+                                                + INDENT + "1.[✓] read book\n"
+                                                + INDENT + "2.[✗] return book\n"
+                                                + INDENT + "3.[✗] buy bread";
     private static final String COMMAND_EXIT_STRING = "bye";
     private static final String COMMAND_LIST_STRING = "list";
-    private static final String MESSAGE_WELL_DONE = "Nice! I've marked this task as done:\n       ";
+    private static final String MESSAGE_WELL_DONE = "Nice! I've marked this task as done:\n      ";
     private static final Scanner SCANNER = new Scanner(System.in);
-    private static final int Capacity = 50;
+    private static final int MAX_CAPACITY = 100;
     private static int contentCount = 0;
     public static boolean done = false;
-    private static String[] contents = new String[Capacity];
+    private static String[] contents = new String[MAX_CAPACITY];
 
     public static void main(String[] args) {
         welcomeMessage();
@@ -82,7 +85,6 @@ public class Duke {
         }
     }
 
-
     private static void taskIsDone (int taskNumber) {
         String taskName;
         switch (taskNumber) {
@@ -106,4 +108,3 @@ public class Duke {
     }
 
 }
-

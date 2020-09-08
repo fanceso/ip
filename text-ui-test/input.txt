@@ -1,0 +1,13 @@
+todo T-task1
+todo T-task2
+deadline D-task3 /by this Friday
+event E-task4 /at next Sunday
+list
+done 2
+done 4
+list
+todo
+event /at next Sunday
+event wedding /at
+deadline
+bye

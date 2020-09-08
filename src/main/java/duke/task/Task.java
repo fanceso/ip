@@ -1,3 +1,5 @@
+package duke.task;
+
 public class Task {
     protected String description;
     protected boolean isDone;
@@ -14,7 +16,7 @@ public class Task {
     }
 
     /**
-     * Gets a Unicode character representing if the Task is done
+     * Gets a Unicode character representing if the duke.task.Task is done
      * (tick for yes, cross for no).
      */
     public String getStatusIcon() {

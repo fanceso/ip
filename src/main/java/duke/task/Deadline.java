@@ -1,3 +1,5 @@
+package duke.task;
+
 public class Deadline extends Task {
     protected String dueDate;
     protected final String TASK_TYPE = "[D]";

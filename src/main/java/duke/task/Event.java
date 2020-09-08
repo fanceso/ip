@@ -1,3 +1,5 @@
+package duke.task;
+
 public class Event extends Task {
     protected String eventTime;
     protected final String TASK_TYPE = "[E]";

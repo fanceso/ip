@@ -1,3 +1,7 @@
+package duke;
+
+import duke.task.*;
+
 import java.util.Scanner;
 
 public class Duke {
@@ -39,7 +43,7 @@ public class Duke {
 
     private static void welcomeMessage() {
         System.out.println(LINE);
-        System.out.println("Hello! I'm Duke");
+        System.out.println("Hello! I'm duke.Duke");
         System.out.println("What can I do for you?");
         System.out.println(LINE);
     }

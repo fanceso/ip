@@ -25,7 +25,7 @@ public class Duke {
     private static int taskIndex = 0;
     private static Task[] tasks = new Task[MAX_CAPACITY];
 
-    public static void main(String[] args) throws InvalidCommandException {
+    public static void main(String[] args) {
         welcomeMessage();
         while (true) {
             String userCommand = getUserInput();
@@ -102,7 +102,7 @@ public class Duke {
                 + "\n    Now you have " + taskCount + " tasks in the list.");
     }
 
-    private static void executeCommand(String userCommand) throws InvalidCommandException {
+    private static void executeCommand(String userCommand) {
         String taskAction = taskIdentify(userCommand);
         try {
             switch (taskAction) {

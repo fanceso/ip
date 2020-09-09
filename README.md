@@ -37,3 +37,5 @@ Add support for tracking three types of tasks:
 ##### 1. ToDos: tasks without any date/time attached to it e.g., visit new theme park
 ##### 2. Deadlines: tasks that need to be done before a specific date/time e.g., submit report by 11/10/2019 5pm
 ##### 3. Events: tasks that start at a specific time and ends at a specific time e.g., team project meeting on 2/10/2019 2-4pm
+
+#### Level 5. Error Handling

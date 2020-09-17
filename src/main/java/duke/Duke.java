@@ -1,14 +1,24 @@
 package duke;
 
-import duke.task.*;
+import duke.task.Deadline;
+import duke.task.Event;
+import duke.task.Task;
+import duke.task.ToDo;
 
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.Scanner;
 
 public class Duke {
+    private static final String FILE_PATH_NAME = System.getProperty("user.dir") + "\\data-folder";
+    private static final String FILE_NAME = FILE_PATH_NAME + "\\data.txt";
+    private static final String TEMP_FILE_NAME = FILE_PATH_NAME + "\\.temp.data.txt";
     private static final String LINE = "-".repeat(Math.max(0, 59));
     private static final String INDENT = " ".repeat(Math.max(0, 3));
     private static final String INDENT2 = " ".repeat(Math.max(0, 4));
     private static final String MESSAGE_GOODBYE = "Bye. Hope to see you again soon!";
+    private static final String FILE_MESSAGE = "Schedule Action Planner.\n[✘: Pending |  ✓: Done]\nT: To do | E: Event | D: Deadline";
     private static final String LIST_MESSAGE = "Here are the tasks in your list:";
     private static final String COMMAND_EXIT_STRING = "bye";
     private static final String COMMAND_LIST_STRING = "list";
@@ -23,13 +33,106 @@ public class Duke {
     public static String taskContent = "";
     private static int taskCount = 0;
     private static int taskIndex = 0;
-    private static Task[] tasks = new Task[MAX_CAPACITY];
+    private static boolean loaded = false;
+    private static boolean autoSaveMode = false;
+    private static final Task[] tasks = new Task[MAX_CAPACITY];
+    private static File file = new File(FILE_NAME);
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
+        loadFile();
+        System.out.println("Data Directory located: " + FILE_PATH_NAME);
         welcomeMessage();
         while (true) {
             String userCommand = getUserInput();
             executeCommand(userCommand);
+        }
+    }
+
+
+    private static void autoSave() throws IOException {
+        String msgContent = "";
+        // if file does not exist, create new file
+        int i;
+        for (i = 0; i < taskCount; i++) {
+            msgContent += "\n" + INDENT + (i + 1) + "." + tasks[i];
+        }
+        writeToFile(msgContent);
+    }
+
+    private static void writeToFile(String textToAdd) throws IOException {
+        FileWriter fw = new FileWriter(FILE_NAME);
+        fw.write(FILE_MESSAGE + textToAdd);
+        fw.close();
+    }
+
+    private static void loadFile() throws IOException {
+
+        File theDir = new File("data-folder");
+
+        // create directory if does not exist
+        if (!theDir.exists()) {
+            System.out.println("Creating new directory: " + theDir.getName());
+            boolean result = false;
+            try {
+                theDir.mkdir();
+                result = true;
+            } catch (SecurityException se) {
+                System.out.println("Permission Denited");
+            }
+            if (result) {
+                System.out.println("DIR created");
+            }
+        }
+
+        String content = "";
+        // Skipping the first 3 lines from file
+        int lines = 0;
+        if (file.createNewFile()) {
+            autoSaveMode = true;
+            loaded = true;
+        } else {
+            autoSaveMode = false;
+            if (!loaded) {
+                Scanner s = new Scanner(file);
+                // loading existing file once and add them into list
+                while (s.hasNext()) {
+                    // ignoring the first 3 lines
+                    if (lines < 3) {
+                        s.nextLine();
+                        lines++;
+                    } else {
+                        content = s.nextLine();
+                        int dividePoint1 = content.indexOf(".[");
+                        int dividePoint2 = content.indexOf("] ");
+                        char taskType = content.charAt(dividePoint1 + 2);
+                        String taskDetails = content.substring(dividePoint2 + 2);
+                        String taskIsDone = content.substring(dividePoint1 + 5, dividePoint2);
+                        String message = "";
+                        switch (taskType) {
+                        case 'T':
+                            message += "todo " + taskDetails;
+                            break;
+                        case 'E':
+                            taskDetails = taskDetails.replace("(at:", "/at");
+                            taskDetails = taskDetails.replace(")", "");
+                            message += "event " + taskDetails;
+                            break;
+                        case 'D':
+                            taskDetails = taskDetails.replace("(by:", "/by");
+                            taskDetails = taskDetails.replace(")", "");
+                            message += "deadline " + taskDetails;
+                            break;
+                        }
+                        executeCommand(message);
+                        int taskIndexInFile = taskIndex - 1;
+                        if (taskIsDone.equals(Task.TICK)) {
+                            tasks[taskIndexInFile].markAsDone();
+                        }
+                    }
+                }
+                loaded = true;
+                autoSaveMode = true;
+            }
         }
     }
 
@@ -82,8 +185,7 @@ public class Duke {
             String eventTime = taskDescription.substring(timeSeparator + 3).trim();
             if (task.equals("")) {
                 throw new InvalidCommandException("event-error");
-            }
-            else if (eventTime.equals("")){
+            } else if (eventTime.equals("")) {
                 throw new InvalidCommandException("event-date-error");
             }
             tasks[taskIndex] = new Event(task, eventTime);
@@ -95,11 +197,19 @@ public class Duke {
 
     private static void addTask(Task content) {
         taskCount++;
-        // The next task index wil be increase after assigning the current content.
         tasks[taskIndex++] = content;
-        UiDisplay(ADDED_MESSAGE
-                + INDENT2 + content
-                + "\n    Now you have " + taskCount + " tasks in the list.");
+        if (loaded) {
+            UiDisplay(ADDED_MESSAGE
+                    + INDENT2 + content
+                    + "\n   Now you have " + taskCount + " tasks in the list.");
+        }
+        if (autoSaveMode) {
+            try {
+                autoSave();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     private static void executeCommand(String userCommand) {
@@ -152,6 +262,9 @@ public class Duke {
                 UiDisplay(":-( OOPS!!! The date of event is wrong format..");
                 break;
             }
+
+        }catch (IOException exception){
+            UiDisplay(":-( OOPS!!! File Format is wrong.");
         }
     }
 
@@ -194,11 +307,12 @@ public class Duke {
         }
     }
 
-    private static void markAsDone(int inputNumber) {
+    private static void markAsDone(int inputNumber) throws IOException {
         int taskNumber = inputNumber - 1;
         if ((inputNumber > 0) && (taskNumber < taskCount)) {
             tasks[taskNumber].markAsDone();
             UiDisplay(MESSAGE_WELL_DONE + tasks[taskNumber].toString());
+            autoSave();
         } else {
             System.out.println("Invalid task number.");
         }

@@ -1,0 +1,5 @@
+Schedule Action Planner.
+[✘: Pending |  ✓: Done]
+T: To do | E: Event | D: Deadline
+   1.[T][✓] `1
+   2.[E][✘] sleep (at: 23:59)

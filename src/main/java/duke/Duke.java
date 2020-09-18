@@ -5,6 +5,7 @@ import duke.task.Event;
 import duke.task.Task;
 import duke.task.ToDo;
 
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.io.File;
 import java.io.FileWriter;
@@ -14,7 +15,6 @@ import java.util.Scanner;
 public class Duke {
     private static final String FILE_PATH_NAME = System.getProperty("user.dir") + "\\data-folder";
     private static final String FILE_NAME = FILE_PATH_NAME + "\\data.txt";
-    private static final String TEMP_FILE_NAME = FILE_PATH_NAME + "\\.temp.data.txt";
     private static final String LINE = "-".repeat(Math.max(0, 59));
     private static final String INDENT = " ".repeat(Math.max(0, 3));
     private static final String INDENT2 = " ".repeat(Math.max(0, 4));
@@ -63,7 +63,8 @@ public class Duke {
     }
 
     private static void writeToFile(String textToAdd) throws IOException {
-        FileWriter fw = new FileWriter(FILE_NAME);
+        // Parameter StandardCharsets.UTF_8 to make sure file type exported
+        FileWriter fw = new FileWriter(FILE_NAME, StandardCharsets.UTF_8);
         fw.write(FILE_MESSAGE + textToAdd);
         fw.close();
     }

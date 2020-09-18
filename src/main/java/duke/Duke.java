@@ -5,23 +5,25 @@ import duke.task.Event;
 import duke.task.Task;
 import duke.task.ToDo;
 
-import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Duke {
     private static final String FILE_PATH_NAME = System.getProperty("user.dir") + "\\data-folder";
     private static final String FILE_NAME = FILE_PATH_NAME + "\\data.txt";
+    private static final String TEMP_FILE_NAME = FILE_PATH_NAME + "\\.temp.data.txt";
     private static final String LINE = "-".repeat(Math.max(0, 59));
     private static final String INDENT = " ".repeat(Math.max(0, 3));
     private static final String INDENT2 = " ".repeat(Math.max(0, 4));
     private static final String MESSAGE_GOODBYE = "Bye. Hope to see you again soon!";
     private static final String FILE_MESSAGE = "Schedule Action Planner.\n[✘: Pending |  ✓: Done]\nT: To do | E: Event | D: Deadline";
     private static final String LIST_MESSAGE = "Here are the tasks in your list:";
-    private static final String COMMAND_EXIT_STRING = "bye";
+    private static final String COMMAND_BYE_STRING = "bye";
+    private static final String COMMAND_EXIT_STRING = "exit";
     private static final String COMMAND_LIST_STRING = "list";
     private static final String COMMAND_DONE_STRING = "done";
     private static final String COMMAND_DELETE_STRING = "delete";
@@ -37,7 +39,7 @@ public class Duke {
     private static int taskIndex = 0;
     private static boolean loaded = false;
     private static boolean autoSaveMode = false;
-//    private static final Task[] tasks = new Task[MAX_CAPACITY];
+    //    private static final Task[] tasks = new Task[MAX_CAPACITY];
     private static File file = new File(FILE_NAME);
 
 
@@ -63,7 +65,6 @@ public class Duke {
     }
 
     private static void writeToFile(String textToAdd) throws IOException {
-        // Parameter StandardCharsets.UTF_8 to make sure file type exported
         FileWriter fw = new FileWriter(FILE_NAME, StandardCharsets.UTF_8);
         fw.write(FILE_MESSAGE + textToAdd);
         fw.close();
@@ -88,7 +89,7 @@ public class Duke {
             }
         }
 
-        String content = "";
+        String content ;
         // Skipping the first 3 lines from file
         int lines = 0;
         if (file.createNewFile()) {
@@ -97,7 +98,8 @@ public class Duke {
         } else {
             autoSaveMode = false;
             if (!loaded) {
-                Scanner s = new Scanner(file);
+                //File reading from UTF-8 charset
+                Scanner s = new Scanner(file, "UTF8");
                 // loading existing file once and add them into list
                 while (s.hasNext()) {
                     // ignoring the first 3 lines
@@ -134,6 +136,7 @@ public class Duke {
                         }
                     }
                 }
+                System.out.println("Loaded from previous file: " + FILE_NAME);
                 loaded = true;
                 autoSaveMode = true;
             }
@@ -219,6 +222,7 @@ public class Duke {
         try {
             switch (taskAction) {
             case COMMAND_EXIT_STRING:
+            case COMMAND_BYE_STRING:
                 exitProgram();
                 break;
             case COMMAND_DONE_STRING:
@@ -272,7 +276,7 @@ public class Duke {
                 UiDisplay(":-( OOPS!!! The date of event is wrong format.");
                 break;
             }
-        }catch (IOException exception){
+        } catch (IOException exception) {
             UiDisplay(":-( OOPS!!! File Format is wrong.");
 
         }
@@ -339,7 +343,7 @@ public class Duke {
         int taskNumber = inputNumber - 1;
         if ((inputNumber > 0) && (taskNumber < taskCount)) {
             tasks.get(taskNumber).markAsDone();
-            UiDisplay(MESSAGE_WELL_DONE + tasks.get(taskNumber).toString());
+            UiDisplay(MESSAGE_WELL_DONE + INDENT + tasks.get(taskNumber).toString());
             autoSave();
         } else {
             System.out.println("Invalid task number.");

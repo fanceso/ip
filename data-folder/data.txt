@@ -1,5 +1,7 @@
 Schedule Action Planner.
 [✘: Pending |  ✓: Done]
 T: To do | E: Event | D: Deadline
-   1.[T][✓] `1
-   2.[E][✘] sleep (at: 23:59)
+   1.[T][✓] 4
+   2.[T][✓] list
+   3.[T][✓] 1
+   4.[D][✘] submit math (by: 23:59pm)

@@ -1,22 +1,21 @@
 package duke.common;
 
 public class Messages {
-    public static final String LINE = "-".repeat(Math.max(0, 59));
-    public static final String INDENT = " ".repeat(Math.max(0, 3));
-    public static final String INDENT2 = " ".repeat(Math.max(0, 4));
+    public static final String MESSAGE_VERSION = "Version: A-MORE OOP";
+    public static final String MESSAGE_WELCOME = "Hello! I'm Duke.\nWhat can I do for you?";
     public static final String MESSAGE_GOODBYE = "Bye. Hope to see you again soon!";
-    public static final String FILE_MESSAGE = "Schedule Action Planner.\n[✘: Pending |  ✓: Done]\nT: To do | E: Event | D: Deadline";
-    public static final String LIST_MESSAGE = "Here are the tasks in your list:";
-    public static final String COMMAND_BYE_STRING = "bye";
-    public static final String COMMAND_EXIT_STRING = "exit";
-    public static final String COMMAND_LIST_STRING = "list";
-    public static final String COMMAND_DONE_STRING = "done";
-    public static final String COMMAND_DELETE_STRING = "delete";
-    public static final String COMMAND_DEADLINE_STRING = "deadline";
-    public static final String COMMAND_EVENT_STRING = "event";
-    public static final String COMMAND_TODO_STRING = "todo";
-    public static final String ADDED_MESSAGE = "Got it. I've added this task:\n";
-    public static final String MESSAGE_WELL_DONE = "Nice! I've marked this task as done:\n ";
-    public static final String DATE_ERROR_MESSAGE =  ":-( OOPS!!! The date format is wrong.";
-    public static final String DESCRIPTION_ERROR_MESSAGE = ":-( OOPS!!! The description cannot be empty.";
+    public static final String MESSAGE_NO_TASK = "There is no task in the list. Please add new task!";
+    public static final String MESSAGE_INVALID_COMMAND = "Invalid command format!";
+    public static final String MESSAGE_INVALID_FILE = "The file used is invalid.\n";
+    public static final String MESSAGE_NUMBER_OF_TASK = "You have %d tasks in the list now.";
+    public static final String MESSAGE_INVALID_TASK_INDEX = "The task index provided is invalid";
+    public static final String MESSAGE_NUMERICAL_ERROR = "Please enter the correct numerical task index";
+    public static final String MESSAGE_FILE_INTRO = "Schedule Action Planner.\n[✘: Pending |  ✓: Done]\nT: To do | E: Event | D: Deadline";
+    public static final String MESSAGE_LIST_OUT = "Here are the tasks in your list:\n";
+    public static final String MESSAGE_ADDED = "Got it. I've added this task:\n";
+    public static final String MESSAGE_REMOVED = "Roger that. I've removed this task:\n";
+    public static final String MESSAGE_WELL_DONE = "Nice! I've marked this task as done:\n";
+    public static final String MESSAGE_TASK_NOT_IN_LIST = "The task index provided is not found";
+    public static final String MESSAGE_DATE_ERROR = ":-( OOPS!!! The date format is wrong.";
+    public static final String MESSAGE_DESCRIPTION_ERROR = ":-( OOPS!!! The description cannot be empty.";
 }

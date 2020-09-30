@@ -10,7 +10,7 @@ public class ExitCommand extends Command {
     public static final String COMMAND_BYE_WORD = "bye";
 
     @Override
-    public void execute(TaskList tasks, FileStorage storage, Ui ui) {
+    public void execute(TaskList taskList, FileStorage storage, Ui ui) {
         programShutdown = true;
         // Tells user where is data file located.
         if (FileStorage.fileLoaded) {

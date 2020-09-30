@@ -3,9 +3,10 @@ package duke.data;
 import duke.data.task.Task;
 
 import java.util.ArrayList;
+import java.util.stream.Collectors;
 
 public class TaskList {
-    private static ArrayList<Task> tasks;
+    public static ArrayList<Task> tasks;
 
     public TaskList() {
         this.tasks = new ArrayList<>();

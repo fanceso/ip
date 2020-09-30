@@ -18,13 +18,13 @@ public class DoneCommand extends Command {
     }
 
     @Override
-    public void execute(TaskList tasks, FileStorage storage, Ui ui) {
-        Task task = tasks.getTask(taskIndex);
-        tasks.markDone(taskIndex);
+    public void execute(TaskList taskList, FileStorage storage, Ui ui) {
+        Task task = taskList.getTask(taskIndex);
+        taskList.markDone(taskIndex);
         if (FileStorage.fileLoaded) {
             String messageContent = MESSAGE_WELL_DONE + ui.indentPrint() + task;
             ui.showCommandResult(messageContent);
-            storage.autoSave(tasks);
+            storage.autoSave(taskList);
         }
     }
 

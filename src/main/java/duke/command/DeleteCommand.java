@@ -18,12 +18,12 @@ public class DeleteCommand extends Command {
     }
 
     @Override
-    public void execute(TaskList tasks, FileStorage storage, Ui ui) {
-        Task task = tasks.getTask(indexForDeletion);
-        tasks.taskRemove(indexForDeletion);
+    public void execute(TaskList taskList, FileStorage storage, Ui ui) {
+        Task task = taskList.getTask(indexForDeletion);
+        taskList.taskRemove(indexForDeletion);
         String messageContent = MESSAGE_REMOVED + ui.indentPrint() + task;
         ui.showCommandResult(messageContent);
-        storage.autoSave(tasks);
+        storage.autoSave(taskList);
     }
 
 }

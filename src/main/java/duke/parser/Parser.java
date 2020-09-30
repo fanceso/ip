@@ -5,6 +5,7 @@ import duke.command.Command;
 import duke.command.DeleteCommand;
 import duke.command.DoneCommand;
 import duke.command.ExitCommand;
+import duke.command.FindCommand;
 import duke.command.InvalidCommand;
 import duke.command.ListCommand;
 import duke.data.TaskList;
@@ -29,8 +30,8 @@ import static duke.common.Messages.MESSAGE_NUMERICAL_ERROR;
 
 public class Parser {
 
-    private static String taskContent;
     private static Task tasks;
+    public static String taskContent;
 
     public static Command parseCommand(String userCommand) {
         Command command;
@@ -97,6 +98,13 @@ public class Parser {
                 command = new InvalidCommand(MESSAGE_NUMERICAL_ERROR);
             } catch (InvalidTaskIndexException | IndexOutOfBoundsException e) {
                 command = new InvalidCommand(MESSAGE_INVALID_TASK_INDEX);
+            }
+            break;
+        case FindCommand.COMMAND_WORD:
+            if (taskContent.equals("")) {
+                command = new InvalidCommand(MESSAGE_INVALID_COMMAND);
+            } else {
+                command = new FindCommand(taskContent);
             }
             break;
         default:

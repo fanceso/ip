@@ -1,14 +1,19 @@
 package duke.ui;
 
 import duke.data.TaskList;
+import duke.data.task.Task;
+import duke.parser.Parser;
 import duke.storage.FileStorage;
 
 import java.io.PrintStream;
+import java.util.ArrayList;
 import java.util.Scanner;
+import java.util.stream.Collectors;
 
 import static duke.common.Messages.MESSAGE_GOODBYE;
 import static duke.common.Messages.MESSAGE_INVALID_FILE;
 import static duke.common.Messages.MESSAGE_LIST_OUT;
+import static duke.common.Messages.MESSAGE_NO_SUCH_TASK;
 import static duke.common.Messages.MESSAGE_NO_TASK;
 import static duke.common.Messages.MESSAGE_NUMBER_OF_TASK;
 import static duke.common.Messages.MESSAGE_VERSION;
@@ -50,6 +55,26 @@ public class Ui {
         out.println(MESSAGE_VERSION);
         out.println(MESSAGE_WELCOME);
         drawlLine();
+    }
+
+    public void showFindResult(ArrayList<Task> tasks, String keyword) {
+        drawlLine();
+
+        if (tasks.size() > 0) {
+            ArrayList<Task> resultList = (ArrayList<Task>) tasks.stream()
+                    .filter((task) -> (task.description.contains(keyword)))
+                    .collect(Collectors.toList());
+            if (resultList.size() > 0) {
+                resultList.stream().forEach(out::println);
+            } else {
+                out.println(MESSAGE_NO_SUCH_TASK + Parser.taskContent);
+            }
+        } else {
+            out.println(MESSAGE_NO_TASK);
+        }
+
+        drawlLine();
+
     }
 
     public void showInvalidFileMessage() {

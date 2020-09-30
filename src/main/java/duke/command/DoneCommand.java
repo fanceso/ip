@@ -1,12 +1,11 @@
 package duke.command;
 
-import duke.common.Messages;
 import duke.data.TaskList;
 import duke.data.task.Task;
 import duke.storage.FileStorage;
 import duke.ui.Ui;
 
-import java.io.IOException;
+import static duke.common.Messages.MESSAGE_WELL_DONE;
 
 public class DoneCommand extends Command {
 
@@ -23,7 +22,7 @@ public class DoneCommand extends Command {
         Task task = tasks.getTask(taskIndex);
         tasks.markDone(taskIndex);
         if (FileStorage.fileLoaded) {
-            String messageContent = Messages.MESSAGE_WELL_DONE + ui.indentPrint() + task;
+            String messageContent = MESSAGE_WELL_DONE + ui.indentPrint() + task;
             ui.showCommandResult(messageContent);
             storage.autoSave(tasks);
         }

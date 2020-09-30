@@ -20,7 +20,7 @@ public class TaskList {
     }
 
     public void markDone(int index) {
-        tasks.get(index). markAsDone();
+        tasks.get(index).markAsDone();
     }
 
     public static int getTaskListSize() {

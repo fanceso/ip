@@ -2,9 +2,7 @@ package duke.storage;
 
 import duke.Duke;
 import duke.command.Command;
-import duke.common.Messages;
 import duke.data.TaskList;
-import duke.data.exception.InvalidCommandException;
 import duke.data.task.Task;
 import duke.parser.Parser;
 import duke.ui.Ui;
@@ -13,22 +11,24 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Locale;
 import java.util.Scanner;
 
+import static duke.common.Messages.MESSAGE_FILE_INTRO;
 
 public class FileStorage {
 
-    private static File file;
     private static String folderName;
     public static boolean fileLoaded;
     public static String FOLDER_FULL_PATH;
     public static String FILE_FULL_NAME;
     private static Ui ui;
 
-
     public FileStorage(String filePath) {
         int divider = filePath.lastIndexOf("/");
-        this.folderName = filePath.substring(0, divider);
+        folderName = filePath.substring(0, divider);
         FOLDER_FULL_PATH = System.getProperty("user.dir") + folderName;
         FILE_FULL_NAME = System.getProperty("user.dir") + "\\" + filePath.replace("/", "\\");
         fileLoaded = false;
@@ -36,14 +36,14 @@ public class FileStorage {
     }
 
     public static void autoSave(TaskList taskList) {
-        String msgContent = "";
+        StringBuilder msgContent = new StringBuilder();
         // if file does not exist, create new file
         int i;
-        for (i = 0; i < taskList.getTaskListSize(); i++) {
-            msgContent += "\n\t" + (i + 1) + "." + taskList.getTask(i);
+        for (i = 0; i < TaskList.getTaskListSize(); i++) {
+            msgContent.append("\n\t").append(i + 1).append(".").append(taskList.getTask(i));
         }
         try {
-            writeToFile(msgContent);
+            writeToFile(msgContent.toString());
         } catch (IOException e) {
             ui.showError();
         }
@@ -51,13 +51,14 @@ public class FileStorage {
 
     private static void writeToFile(String textToAdd) throws IOException {
         FileWriter fw = new FileWriter(FILE_FULL_NAME, StandardCharsets.UTF_8);
-        fw.write(Messages.MESSAGE_FILE_INTRO + textToAdd);
+        fw.write(MESSAGE_FILE_INTRO + textToAdd);
         fw.close();
     }
 
-    public static void loadFile(TaskList taskList) throws IOException, InvalidCommandException {
+    public static void loadFile(TaskList taskList) throws IOException {
         File theDir = new File(folderName);
-        file = new File(FILE_FULL_NAME);
+        File file = new File(FILE_FULL_NAME);
+
 
         // create directory if does not exist
         if (!theDir.exists()) {
@@ -82,9 +83,11 @@ public class FileStorage {
             System.out.println("There is no record data file found");
         } else {
             if (!fileLoaded) {
+                DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("MMM dd yyyy HH:mm", Locale.ENGLISH);
+                LocalDateTime dateTime;
                 //File reading from UTF-8 charset
                 Scanner s = new Scanner(file, StandardCharsets.UTF_8);
-                Parser parser = new Parser();
+
                 // loading existing file once and add them into list
                 boolean completed = false;
                 while (s.hasNext()) {
@@ -108,15 +111,26 @@ public class FileStorage {
                         case 'E':
                             taskDetails = taskDetails.replace("(at:", "/at");
                             taskDetails = taskDetails.replace(")", "");
-                            taskInFile += "event " + taskDetails;
+                            int atSeparator = taskDetails.indexOf("/at");
+                            String eventTime = taskDetails.substring(atSeparator + 4);
+                            dateTime = LocalDateTime.parse(eventTime, dateFormat);
+                            taskDetails = taskDetails.substring(0, atSeparator);
+                            taskInFile += "event " + taskDetails
+                                    + " /at " + DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm").format(dateTime);
                             break;
                         case 'D':
                             taskDetails = taskDetails.replace("(by:", "/by");
                             taskDetails = taskDetails.replace(")", "");
-                            taskInFile += "deadline " + taskDetails;
+                            int bySeparator = taskDetails.indexOf("/by");
+                            String dueDate = taskDetails.substring(bySeparator + 4);
+                            dateTime = LocalDateTime.parse(dueDate, dateFormat);
+                            taskDetails = taskDetails.substring(0, bySeparator);
+                            taskInFile += "deadline " + taskDetails
+                                    + " /by " + DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm").format(dateTime);
                             break;
                         }
 
+                        Parser parser = new Parser();
                         Command command = parser.parseCommand(taskInFile);
                         command.execute(taskList, Duke.storage, Duke.ui);
 

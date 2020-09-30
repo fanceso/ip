@@ -4,8 +4,6 @@ import duke.data.TaskList;
 import duke.storage.FileStorage;
 import duke.ui.Ui;
 
-import java.io.IOException;
-
 public abstract class Command {
 
     protected static boolean programShutdown;

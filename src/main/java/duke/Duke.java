@@ -2,7 +2,6 @@ package duke;
 
 import duke.command.Command;
 import duke.data.TaskList;
-import duke.data.exception.InvalidCommandException;
 import duke.parser.Parser;
 import duke.storage.FileStorage;
 import duke.ui.Ui;
@@ -34,7 +33,7 @@ public class Duke {
         try {
             taskList = new TaskList();
             FileStorage.loadFile(taskList);
-        } catch (IOException | InvalidCommandException exception) {
+        } catch (IOException exception) {
             ui.showInvalidFileMessage();
         }
         ui.showWelcomeMessage();

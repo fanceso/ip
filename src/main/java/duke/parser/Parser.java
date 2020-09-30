@@ -1,24 +1,38 @@
 package duke.parser;
 
-import duke.command.*;
-import duke.common.Messages;
+import duke.command.AddCommand;
+import duke.command.Command;
+import duke.command.DeleteCommand;
+import duke.command.DoneCommand;
+import duke.command.ExitCommand;
+import duke.command.InvalidCommand;
+import duke.command.ListCommand;
 import duke.data.TaskList;
 import duke.data.exception.InvalidCommandException;
+import duke.data.exception.InvalidDateFormatException;
 import duke.data.exception.InvalidTaskIndexException;
 import duke.data.exception.InvalidValueException;
 import duke.data.task.Deadline;
 import duke.data.task.Event;
 import duke.data.task.Task;
 import duke.data.task.ToDo;
-import duke.ui.Ui;
+
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
+
+import static duke.common.Messages.MESSAGE_INVALID_COMMAND;
+import static duke.common.Messages.MESSAGE_INVALID_DATE_FORMAT;
+import static duke.common.Messages.MESSAGE_INVALID_TASK_INDEX;
+import static duke.common.Messages.MESSAGE_NUMERICAL_ERROR;
+
 
 public class Parser {
 
     private static String taskContent;
     private static Task tasks;
-    private static Ui ui = new Ui();
 
-    public static Command parseCommand(String userCommand){
+    public static Command parseCommand(String userCommand) {
         Command command;
         String taskAction = taskIdentify(userCommand);
         switch (taskAction) {
@@ -28,7 +42,7 @@ public class Parser {
             break;
         case ListCommand.COMMAND_WORD:
             if (!taskContent.equals("")) {
-                command = new InvalidCommand(Messages.MESSAGE_INVALID_COMMAND);
+                command = new InvalidCommand(MESSAGE_INVALID_COMMAND);
             } else {
                 command = new ListCommand();
             }
@@ -40,49 +54,53 @@ public class Parser {
         case AddCommand.COMMAND_EVENT_WORD:
             try {
                 verifyEventTask(taskContent);
-            } catch (InvalidCommandException e) {
-                e.printStackTrace();
+                command = new AddCommand(tasks);
+            } catch (InvalidCommandException exception) {
+                command = new InvalidCommand(MESSAGE_INVALID_COMMAND);
+            } catch (InvalidDateFormatException exception) {
+                command = new InvalidCommand(MESSAGE_INVALID_DATE_FORMAT);
             }
-            command = new AddCommand(tasks);
             break;
         case AddCommand.COMMAND_DEADLINE_WORD:
             try {
                 verifyDeadlineTask(taskContent);
-            } catch (InvalidCommandException e) {
-                e.printStackTrace();
+                command = new AddCommand(tasks);
+            } catch (InvalidCommandException exception) {
+                command = new InvalidCommand(MESSAGE_INVALID_COMMAND);
+            } catch (InvalidDateFormatException exception) {
+                command = new InvalidCommand(MESSAGE_INVALID_DATE_FORMAT);
             }
-            command = new AddCommand(tasks);
             break;
         case DoneCommand.COMMAND_WORD:
             try {
-                if (!stringIsNumeric(taskContent) || taskContent.equals("")) {
+                if (stringIsNotNumeric(taskContent) || taskContent.equals("")) {
                     throw new InvalidValueException();
                 } else if (Integer.parseInt(taskContent) > TaskList.getTaskListSize()) {
                     throw new InvalidTaskIndexException();
                 }
                 command = new DoneCommand(Integer.parseInt(taskContent) - 1);
             } catch (InvalidValueException e) {
-                command = new InvalidCommand(Messages.MESSAGE_NUMERICAL_ERROR);
+                command = new InvalidCommand(MESSAGE_NUMERICAL_ERROR);
             } catch (InvalidTaskIndexException | IndexOutOfBoundsException e) {
-                command = new InvalidCommand(Messages.MESSAGE_INVALID_TASK_INDEX);
+                command = new InvalidCommand(MESSAGE_INVALID_TASK_INDEX);
             }
             break;
         case DeleteCommand.COMMAND_DELETE_WORD:
             try {
-                if (!stringIsNumeric(taskContent) || taskContent.equals("")) {
+                if (stringIsNotNumeric(taskContent) || taskContent.equals("")) {
                     throw new InvalidValueException();
                 } else if (Integer.parseInt(taskContent) > TaskList.getTaskListSize()) {
                     throw new InvalidTaskIndexException();
                 }
                 command = new DeleteCommand(Integer.parseInt(taskContent) - 1);
             } catch (InvalidValueException e) {
-                command = new InvalidCommand(Messages.MESSAGE_NUMERICAL_ERROR);
+                command = new InvalidCommand(MESSAGE_NUMERICAL_ERROR);
             } catch (InvalidTaskIndexException | IndexOutOfBoundsException e) {
-                command = new InvalidCommand(Messages.MESSAGE_INVALID_TASK_INDEX);
+                command = new InvalidCommand(MESSAGE_INVALID_TASK_INDEX);
             }
             break;
         default:
-            command = new InvalidCommand(Messages.MESSAGE_INVALID_COMMAND);
+            command = new InvalidCommand(MESSAGE_INVALID_COMMAND);
         }
         return command;
     }
@@ -117,21 +135,24 @@ public class Parser {
         }
     }
 
-    private static void verifyEventTask(String taskDescription) throws InvalidCommandException {
+    private static void verifyEventTask(String taskDescription) throws InvalidCommandException, InvalidDateFormatException {
         try {
             int timeSeparator = taskDescription.indexOf("/at");
             String task = taskDescription.substring(0, timeSeparator).trim();
-            String eventTime = taskDescription.substring(timeSeparator + 3).trim();
+            String atTime = taskDescription.substring(timeSeparator + 3).trim();
+            LocalDateTime eventTime = LocalDateTime.parse(atTime, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
             if (task.equals("") || eventTime.equals("")) {
                 throw new InvalidCommandException();
             }
             tasks = new Event(task, eventTime);
         } catch (StringIndexOutOfBoundsException exception) {
             throw new InvalidCommandException();
+        } catch (DateTimeParseException exception) {
+            throw new InvalidDateFormatException();
         }
     }
 
-    private static void verifyDeadlineTask(String taskDescription) throws InvalidCommandException {
+    private static void verifyDeadlineTask(String taskDescription) throws InvalidCommandException, InvalidDateFormatException {
         try {
             int timeSeparator = taskDescription.indexOf("/by");
             String task = taskDescription.substring(0, timeSeparator).trim();
@@ -139,19 +160,22 @@ public class Parser {
             if (task.equals("") || dueDate.equals("")) {
                 throw new InvalidCommandException();
             }
-            tasks = new Deadline(task, dueDate);
-        } catch (StringIndexOutOfBoundsException iob) {
+            LocalDateTime deadlineTime = LocalDateTime.parse(dueDate, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
+            tasks = new Deadline(task, deadlineTime);
+        } catch (StringIndexOutOfBoundsException exception) {
             throw new InvalidCommandException();
+        } catch (DateTimeParseException exception) {
+            throw new InvalidDateFormatException();
         }
     }
 
     /* Return true if String value can be converted to integer */
-    private static boolean stringIsNumeric(String str) {
+    private static boolean stringIsNotNumeric(String str) {
         try {
             Double.parseDouble(str);
-            return true;
-        } catch (NumberFormatException e) {
             return false;
+        } catch (NumberFormatException e) {
+            return true;
         }
     }
 

@@ -1,7 +1,5 @@
 Schedule Action Planner.
 [✘: Pending |  ✓: Done]
 T: To do | E: Event | D: Deadline
-	1.[D][✘] CS2113 IP (by: Friday)
-	2.[T][✓] Running tonight
-	3.[T][✘] Math Project
-	4.[T][✘] Eat breakfast
+	1.[E][✓] sleeping part (at: Jan 01 2021 01:01)
+	2.[D][✘] level 8 (by: Jan 01 2020 02:02)

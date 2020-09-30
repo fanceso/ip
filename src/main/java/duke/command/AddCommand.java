@@ -1,12 +1,11 @@
 package duke.command;
 
-import duke.common.Messages;
 import duke.data.TaskList;
 import duke.data.task.Task;
 import duke.storage.FileStorage;
 import duke.ui.Ui;
 
-import java.io.IOException;
+import static duke.common.Messages.MESSAGE_ADDED;
 
 public class AddCommand extends Command {
 
@@ -20,11 +19,11 @@ public class AddCommand extends Command {
     }
 
     @Override
-    public void execute(TaskList taskList, FileStorage storage, Ui ui){
+    public void execute(TaskList taskList, FileStorage storage, Ui ui) {
         taskList.add(taskToAdd);
         if (FileStorage.fileLoaded) {
             storage.autoSave(taskList);
-            String messageContent = Messages.MESSAGE_ADDED + ui.indentPrint() + taskToAdd;
+            String messageContent = MESSAGE_ADDED + ui.indentPrint() + taskToAdd;
             ui.showCommandResult(messageContent);
         }
     }

@@ -23,6 +23,14 @@ public class Ui {
         this.out = out;
     }
 
+    public String indentPrint() {
+        return INDENT;
+    }
+
+    public void drawlLine() {
+        out.println(LINE);
+    }
+
     public String getUserInput() {
         out.print("Enter command: ");
         String fullInputLine = in.nextLine();
@@ -37,22 +45,9 @@ public class Ui {
         drawlLine();
     }
 
-    public void drawlLine() {
-        out.println(LINE);
-    }
-
     public void showInvalidFileMessage() {
         out.println(FileStorage.FILE_FULL_NAME);
         out.println(Messages.MESSAGE_INVALID_FILE);
-    }
-
-
-    public void showInvalidIndexMessage() {
-        out.println(Messages.MESSAGE_TASK_NOT_IN_LIST);
-    }
-
-    public void showInvalidNumeric() {
-        out.println(Messages.MESSAGE_NUMERICAL_ERROR);
     }
 
     public void showExitMessage() {
@@ -73,22 +68,21 @@ public class Ui {
             for (i = 0; i < taskList.getTaskListSize(); i++) {
                 out.println(INDENT + String.format("%d.%s", i + 1, taskList.getTask(i)));
             }
-            out.println(String.format(Messages.MESSAGE_NUMBER_OF_TASK,i));
+            out.println(String.format(Messages.MESSAGE_NUMBER_OF_TASK, i));
         } else {
             out.println(Messages.MESSAGE_NO_TASK);
         }
-
         drawlLine();
-    }
-
-    public String indentPrint() {
-        return INDENT;
     }
 
     public void showFileLocation() {
         out.println("Your file has been saved to:");
         out.println(FileStorage.FILE_FULL_NAME);
         drawlLine();
+    }
+
+    public void showError() {
+        out.println("Something went wrong");
     }
 
 }

@@ -1,7 +1,6 @@
 package duke;
 
 import duke.command.Command;
-import duke.command.ExitCommand;
 import duke.data.TaskList;
 import duke.data.exception.InvalidCommandException;
 import duke.parser.Parser;
@@ -42,18 +41,16 @@ public class Duke {
     }
 
     public void runProgram() {
+        boolean isExit = false;
         do {
-            try {
-                String userInput = ui.getUserInput();
-                Command command = Parser.parseCommand(userInput);
-                command.execute(taskList, storage, ui);
-            } catch (IOException | InvalidCommandException e) {
-                System.out.println("Something went Wrong!");
-            }
-        } while (!ExitCommand.isExit());
+            String userInput = ui.getUserInput();
+            Command command = Parser.parseCommand(userInput);
+            command.execute(taskList, storage, ui);
+            isExit = command.isExit();
+        } while (!isExit);
     }
 
-    public static void main(String[] args)  {
+    public static void main(String[] args) {
         new Duke("data-folder/tasks.txt").run();
     }
 

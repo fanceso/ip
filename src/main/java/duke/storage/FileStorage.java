@@ -7,6 +7,7 @@ import duke.data.TaskList;
 import duke.data.exception.InvalidCommandException;
 import duke.data.task.Task;
 import duke.parser.Parser;
+import duke.ui.Ui;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -17,13 +18,13 @@ import java.util.Scanner;
 
 public class FileStorage {
 
+    private static File file;
+    private static String folderName;
+    public static boolean fileLoaded;
     public static String FOLDER_FULL_PATH;
     public static String FILE_FULL_NAME;
+    private static Ui ui;
 
-    private static String folderName;
-
-    private static File file;
-    public static boolean fileLoaded;
 
     public FileStorage(String filePath) {
         int divider = filePath.lastIndexOf("/");
@@ -31,17 +32,21 @@ public class FileStorage {
         FOLDER_FULL_PATH = System.getProperty("user.dir") + folderName;
         FILE_FULL_NAME = System.getProperty("user.dir") + "\\" + filePath.replace("/", "\\");
         fileLoaded = false;
+        ui = new Ui();
     }
 
-
-    public static void autoSave(TaskList taskList) throws IOException {
+    public static void autoSave(TaskList taskList) {
         String msgContent = "";
         // if file does not exist, create new file
         int i;
         for (i = 0; i < taskList.getTaskListSize(); i++) {
             msgContent += "\n\t" + (i + 1) + "." + taskList.getTask(i);
         }
-        writeToFile(msgContent);
+        try {
+            writeToFile(msgContent);
+        } catch (IOException e) {
+            ui.showError();
+        }
     }
 
     private static void writeToFile(String textToAdd) throws IOException {
@@ -70,10 +75,8 @@ public class FileStorage {
         }
 
         String content;
-        // Skipping the first 3 lines from file
+
         int lines = 0;
-
-
         if (file.createNewFile()) {
             fileLoaded = true;
             System.out.println("There is no record data file found");
@@ -85,7 +88,7 @@ public class FileStorage {
                 // loading existing file once and add them into list
                 boolean completed = false;
                 while (s.hasNext()) {
-                    // ignoring the first 3 lines
+                    // Skipping the first 3 lines of introduction from files
                     if (lines < 3 && !completed) {
                         s.nextLine();
                     } else {
@@ -95,8 +98,9 @@ public class FileStorage {
                         int dividePoint2 = content.indexOf("] ");
                         char taskType = content.charAt(dividePoint1 + 2);
                         String taskDetails = content.substring(dividePoint2 + 2);
-                        String taskIsDone = content.substring(dividePoint1 + 5, dividePoint2);
+                        String taskIsDone;
                         String taskInFile = "";
+                        taskIsDone = content.substring(dividePoint1 + 5, dividePoint2);
                         switch (taskType) {
                         case 'T':
                             taskInFile += "todo " + taskDetails;
@@ -123,7 +127,7 @@ public class FileStorage {
                     }
                     lines++;
                 }
-                System.out.println("Loaded from previous file: " + FILE_FULL_NAME);
+                System.out.println("Loaded from local data file: " + FILE_FULL_NAME);
                 fileLoaded = true;
             }
         }

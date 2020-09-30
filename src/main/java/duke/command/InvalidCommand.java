@@ -13,8 +13,8 @@ public class InvalidCommand extends Command {
     }
 
     @Override
-    public void execute(TaskList tasks, FileStorage storage, Ui ui){
-        ui.showTaskList(tasks);
+    public void execute(TaskList tasks, FileStorage storage, Ui ui) {
+        ui.showCommandResult(feedbackToUser);
     }
 
 }

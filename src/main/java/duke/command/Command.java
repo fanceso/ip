@@ -14,7 +14,7 @@ public abstract class Command {
         programShutdown = false;
     }
 
-    public abstract void execute(TaskList tasks, FileStorage storage, Ui ui) throws IOException;
+    public abstract void execute(TaskList tasks, FileStorage storage, Ui ui);
 
     public static boolean isExit() {
         return programShutdown;

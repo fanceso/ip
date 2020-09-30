@@ -18,7 +18,7 @@ public class Parser {
     private static Task tasks;
     private static Ui ui = new Ui();
 
-    public static Command parseCommand(String userCommand) throws InvalidCommandException {
+    public static Command parseCommand(String userCommand){
         Command command;
         String taskAction = taskIdentify(userCommand);
         switch (taskAction) {
@@ -27,44 +27,58 @@ public class Parser {
             command = new ExitCommand();
             break;
         case ListCommand.COMMAND_WORD:
-            command = new ListCommand();
+            if (!taskContent.equals("")) {
+                command = new InvalidCommand(Messages.MESSAGE_INVALID_COMMAND);
+            } else {
+                command = new ListCommand();
+            }
             break;
         case AddCommand.COMMAND_TODO_WORD:
             verifyTodoTask(taskContent);
             command = new AddCommand(tasks);
             break;
         case AddCommand.COMMAND_EVENT_WORD:
-            verifyEventTask(taskContent);
+            try {
+                verifyEventTask(taskContent);
+            } catch (InvalidCommandException e) {
+                e.printStackTrace();
+            }
             command = new AddCommand(tasks);
             break;
         case AddCommand.COMMAND_DEADLINE_WORD:
-            verifyDeadlineTask(taskContent);
+            try {
+                verifyDeadlineTask(taskContent);
+            } catch (InvalidCommandException e) {
+                e.printStackTrace();
+            }
             command = new AddCommand(tasks);
             break;
         case DoneCommand.COMMAND_WORD:
             try {
                 if (!stringIsNumeric(taskContent) || taskContent.equals("")) {
-                    throw new InvalidValueException(taskContent);
+                    throw new InvalidValueException();
                 } else if (Integer.parseInt(taskContent) > TaskList.getTaskListSize()) {
                     throw new InvalidTaskIndexException();
                 }
                 command = new DoneCommand(Integer.parseInt(taskContent) - 1);
-            } catch (InvalidValueException | InvalidTaskIndexException | IndexOutOfBoundsException e) {
-                ui.showInvalidIndexMessage();
-                command = new InvalidCommand(Messages.MESSAGE_INVALID_COMMAND);
+            } catch (InvalidValueException e) {
+                command = new InvalidCommand(Messages.MESSAGE_NUMERICAL_ERROR);
+            } catch (InvalidTaskIndexException | IndexOutOfBoundsException e) {
+                command = new InvalidCommand(Messages.MESSAGE_INVALID_TASK_INDEX);
             }
             break;
         case DeleteCommand.COMMAND_DELETE_WORD:
             try {
                 if (!stringIsNumeric(taskContent) || taskContent.equals("")) {
-                    throw new InvalidValueException(taskContent);
+                    throw new InvalidValueException();
                 } else if (Integer.parseInt(taskContent) > TaskList.getTaskListSize()) {
                     throw new InvalidTaskIndexException();
                 }
                 command = new DeleteCommand(Integer.parseInt(taskContent) - 1);
-            } catch (InvalidValueException | InvalidTaskIndexException | IndexOutOfBoundsException e) {
-                ui.showInvalidIndexMessage();
-                command = new InvalidCommand(Messages.MESSAGE_INVALID_COMMAND);
+            } catch (InvalidValueException e) {
+                command = new InvalidCommand(Messages.MESSAGE_NUMERICAL_ERROR);
+            } catch (InvalidTaskIndexException | IndexOutOfBoundsException e) {
+                command = new InvalidCommand(Messages.MESSAGE_INVALID_TASK_INDEX);
             }
             break;
         default:
@@ -73,7 +87,9 @@ public class Parser {
         return command;
     }
 
-    /* Checking if is a single word or multiple words used command */
+    /**
+     * Checking if is a single word or multiple words used command
+     */
     private static String taskIdentify(String singleLineCommand) {
         singleLineCommand = singleLineCommand.trim();
         if (singleLineCommand.contains(" ")) {
@@ -89,11 +105,15 @@ public class Parser {
     /**
      * Verify that description of todo task is not empty
      */
-    private static void verifyTodoTask(String taskDescription) throws InvalidCommandException {
+    private static void verifyTodoTask(String taskDescription) {
         if (!taskDescription.equals("")) {
             tasks = new ToDo(taskDescription);
         } else {
-            throw new InvalidCommandException();
+            try {
+                throw new InvalidCommandException();
+            } catch (InvalidCommandException e) {
+                e.printStackTrace();
+            }
         }
     }
 

@@ -13,7 +13,6 @@ public class AddCommand extends Command {
     public static final String COMMAND_EVENT_WORD = "event";
     public static final String COMMAND_DEADLINE_WORD = "deadline";
     public static final String COMMAND_TODO_WORD = "todo";
-
     private Task taskToAdd;
 
     public AddCommand(Task task) {
@@ -21,7 +20,7 @@ public class AddCommand extends Command {
     }
 
     @Override
-    public void execute(TaskList taskList, FileStorage storage, Ui ui) throws IOException {
+    public void execute(TaskList taskList, FileStorage storage, Ui ui){
         taskList.add(taskToAdd);
         if (FileStorage.fileLoaded) {
             storage.autoSave(taskList);
@@ -29,6 +28,5 @@ public class AddCommand extends Command {
             ui.showCommandResult(messageContent);
         }
     }
-
 
 }

@@ -1,3 +1,25 @@
+# duke.Duke project template
+
+This is a project template for a greenfield Java project. It's named after the Java mascot _Duke_. Given below are instructions on how to use it.
+
+## Setting up in Intellij
+
+Prerequisites: JDK 11, update Intellij to the most recent version.
+
+1. Open Intellij (if you are not in the welcome screen, click `File` > `Close Project` to close the existing project dialog first)
+1. Set up the correct JDK version, as follows:
+   1. Click `Configure` > `Structure for New Projects` and then `Project Settings` > `Project` > `Project SDK`
+   1. If JDK 11 is listed in the drop down, select it. If it is not, click `New...` and select the directory where you installed JDK 11
+   1. Click `OK`
+1. Import the project into Intellij as follows:
+   1. Click `Open or Import`.
+   1. Select the project directory, and click `OK`
+   1. If there are any further prompts, accept the defaults.
+1. After the importing is complete, locate the `src/main/java/duke.Duke.java` file, right-click it, and choose `Run duke.Duke.main()`. If the setup is correct, you should see something like the below:
+
+
+
+
 # Duke Chat Bot User Guide  
   
 Duke is a **Command Line Interface** (CLI) app which allows you to store 3 types of task; *todo*, *deadline*, *event*.   
@@ -47,9 +69,10 @@ Enter command:
   
 - - -  
   
-### <h3 id="features"> Features  </h3>
+### Features  
+<h5 id="todo"></h5>
 
-#### <h4 id="todo">Adding To-do Task: `todo`  </h4>
+#### Adding To-do Task: `todo`  
 Adding a *To-Do* type of task to the list with its description.  
 ```bat  
 Format: todo <description>  
@@ -58,9 +81,11 @@ Format: todo <description>
 Example:  
 * `todo submission CS2113 project`
 * `todo 3 math assignments`
-<br />
 
-#### <h4 id="event"> Adding Event Task: `event` </h4>
+
+<h5 id="event"></h5><br />
+
+#### Adding Event Task: `event` 
 Adding a *Event* type of task to the list with its description, together with the event date and time.  
 Date and time entered must follow the following format accordingly. 
 ```bat  
@@ -70,9 +95,11 @@ Format: event <description> /at <dd/MM/YYYY HH:mm>
 Example:  
 * `event Tom's Wedding Dinner /at 04/10/2020 19:30`  
 * `event Math Project dicussion /at 01/10/2020 10:00` 
-<br />
 
-#### <h4 id="deadline"> Adding Task with a Deadline: `deadline`  </h4>
+
+<h5 id="deadline"></h5><br />
+
+#### Adding Task with a Deadline: `deadline`  
 Adding a *Deadline* type of task to the list with its description and its due date. 
 Date format must follow the following format accordingly.  
 ```bat  
@@ -82,9 +109,11 @@ Format: deadline <description> /by <dd/MM/YYYY>
 Example:  
 * `deadline online submission /by 11/11/2020`  
 * `deadline Capstone Project presentation /by 04/03/2022 `  
-<br /> 
 
-#### <h4 id="list">Listing out all your tasks: `list` </h4>
+
+<h5 id="list"></h5><br /> 
+
+#### Listing out all your tasks: `list` 
 List out all tasks which added in the list or stored earlier in the data file. The numbering is the index of each task.
  
 > [T] represents To-do task type
@@ -97,9 +126,10 @@ Tasks are indexed according to the order in which the tasks were added to the li
 ```bat  
  Format: list
 ```  
-<br />
 
-#### <h4 id="delete">Deleting a Task from list: `delete`  </h4>
+<h5 id="delete"></h5><br />
+
+#### Deleting a Task from list: `delete`  
 Removing an existing task from the list with the given index in numerical value. 
 ```bat  
 Format: delete <index>
@@ -108,9 +138,11 @@ Format: delete <index>
 Example:  
 * `delete 3`  
 * `delete 1`  
-<br />
+
+
+<h5 id="done"></h5><br />
                            
-#### <h4 id="done">Completing a task: `done` </h4>
+#### Completing a task: `done` 
 Changing the status to done with the selected task index in numerical value.
 ```bat  
  Format: done <index>
@@ -119,9 +151,10 @@ Changing the status to done with the selected task index in numerical value.
 Example:  
 * `done 2`  
 * `done 1`  
-<br /> 
 
-####  <h4 id="find">Finding tasks: `find` </h4>
+<h5 id="find"></h5><br /> 
+
+#### Finding tasks: `find` 
 Finding all tasks which contain the keyword required.
 ```bat  
  Format: find <keyword>
@@ -130,21 +163,24 @@ Finding all tasks which contain the keyword required.
 Example:  
 * `find submission`  
 * `find math projects`  
-<br /> 
 
-#### <h4 id="bye"> Terminate the program: `bye`</h4>
+<h5 id="find"></h5><br /> 
+
+#### Terminate the program: `bye`
 Terminating and exits the app. 
 ```bat  
  Format: bye
 ```
 
-##  <h2 id="commands-summary"> Commands Summary </h2>
-| **Command** | **Format**                                      | **Example**                              |
-|-------------|-------------------------------------------------|------------------------------------------|
-| *todo*      | `todo `                                         | todo submit assignment                   |
-| *event*     | `event <description> /at <dd/MM/YYYY HH:mm>  `  | event Tom's Wedding /at 04/10/2020 19:30 |
-| *deadline*  | `deadline <description> /by <dd/MM/YYYY>  `     | deadline Final submission /by 03/10/2022 |
-| *delete*    | `delete `                                       | delete 1                                 |
-| *done*      | `done `                                         | done 3                                   |
-| *find*      | `find `                                         | find submission                          |
-| *bye*       | `bye`                                           | bye                                      |
+<h5 id="commands-summary"></h5><br /> 
+
+## Commands Summary
+| **Command** | **Format**        | **Example**                              |
+|-------------|-------------------|------------------------------------------|
+| *todo*      | `todo `           | todo submit assignment                   |
+| *event*     | `event  /at  `    | event Tom's Wedding /at 04/10/2020 19:30 |
+| *deadline*  | `deadline  /by  ` | deadline Final submission /by 03/10/2022 |
+| *delete*    | `delete `         | delete 1                                 |
+| *done*      | `done `           | done 3                                   |
+| *find*      | `find `           | find submission                          |
+| *bye*       | `bye`             | bye                                      |

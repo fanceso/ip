@@ -36,14 +36,16 @@ java -Dfile.encoding=UTF-8 -jar duke.jar
 ####### Correct Output Result: 
 ```shell script  
 -----------------------------------------------------------  
-Version: DUKE 0.2Hello! I'm Duke.What can I do for you?  
+Version: DUKE 0.2
+Hello! I'm Duke.
+What can I do for you?  
 -----------------------------------------------------------  
 Enter command:  
 ```  
   
-##### 3. You should see a new folder named "data-folder" and inside folder will contain a "tasks.txt" which have been created by Duke app. Your data will be store in the file.  
-  
-####### Refer to the Features section for the different command features of the Duke app.  
+##### 3. You should see a new folder named "data-folder" and inside folder will contain a "tasks.txt" which have been created by Duke app. Your data will be store in the file.
+
+> *Refer to the Features section for the different command features of the Duke app.* 
   
 - - -  
   

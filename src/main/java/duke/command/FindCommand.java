@@ -4,18 +4,22 @@ import duke.data.TaskList;
 import duke.storage.FileStorage;
 import duke.ui.Ui;
 
-/** Represents an incorrect or invalid command. Upon execution, produces feedback to the user. */
-public class InvalidCommand extends Command {
+/**
+ * Finds and lists all tasks in Duke which description contains any of the argument keyword.
+ * Keyword used for matching is case sensitive.
+ */
+public class FindCommand extends Command {
 
-    public final String feedbackToUser;
+    public static final String COMMAND_WORD = "find";
+    private final String keyword;
 
     /**
-     * Initializes the feedback for invalid command used.
+     * Initializes the keyword for finding.
      *
-     * @param feedbackToUser used to display an error message
+     * @param keyword used to search within the task list in Duke
      */
-    public InvalidCommand(String feedbackToUser) {
-        this.feedbackToUser = feedbackToUser;
+    public FindCommand(String keyword) {
+        this.keyword = keyword;
     }
 
     /**
@@ -27,9 +31,7 @@ public class InvalidCommand extends Command {
      */
     @Override
     public void execute(TaskList taskList, FileStorage storage, Ui ui) {
-        if (FileStorage.fileLoaded) {
-            ui.showCommandResult(feedbackToUser);
-        }
+        ui.showFindResult(taskList.tasks, keyword);
     }
 
 }

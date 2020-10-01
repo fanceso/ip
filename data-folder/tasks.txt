@@ -2,4 +2,6 @@ Schedule Action Planner.
 [✘: Pending |  ✓: Done]
 T: To do | E: Event | D: Deadline
 	1.[E][✓] sleeping part (at: Jan 01 2021 01:01)
-	2.[D][✘] level 8 (by: Jan 01 2020 02:02)
+	2.[D][✘] CS2113 (by: Oct 02 2020)
+	3.[T][✘] submit final code
+	4.[T][✓] 213

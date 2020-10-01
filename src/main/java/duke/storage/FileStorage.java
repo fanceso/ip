@@ -11,21 +11,31 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.Locale;
 import java.util.Scanner;
 
 import static duke.common.Messages.MESSAGE_FILE_INTRO;
+import static duke.common.Messages.MESSAGE_FILE_NOT_FOUND;
+import static duke.common.Messages.MESSAGE_INVALID_FILE_DATA;
 
+/** Represents the file used to store tasks of Duke data. */
 public class FileStorage {
 
-    private static String folderName;
     public static boolean fileLoaded;
     public static String FOLDER_FULL_PATH;
     public static String FILE_FULL_NAME;
+    private static String folderName;
     private static Ui ui;
 
+    /**
+     * Initializes path of folder and ui, define the exact location in the disk.
+     *
+     * @param filePath is the full file path used
+     */
     public FileStorage(String filePath) {
         int divider = filePath.lastIndexOf("/");
         folderName = filePath.substring(0, divider);
@@ -35,6 +45,11 @@ public class FileStorage {
         ui = new Ui();
     }
 
+    /**
+     * Saves data automatically into file.
+     *
+     * @param taskList is to save into file.
+     */
     public static void autoSave(TaskList taskList) {
         StringBuilder msgContent = new StringBuilder();
         // if file does not exist, create new file
@@ -49,16 +64,27 @@ public class FileStorage {
         }
     }
 
+    /**
+     * Saves the {@code TaskList} data to the storage file.
+     *
+     * @param textToAdd is the string content to add into file
+     * @throws IOException if there were errors writing the data to file
+     */
     private static void writeToFile(String textToAdd) throws IOException {
         FileWriter fw = new FileWriter(FILE_FULL_NAME, StandardCharsets.UTF_8);
         fw.write(MESSAGE_FILE_INTRO + textToAdd);
         fw.close();
     }
 
+    /**
+     * Loads the data file into {@code TaskList} TaskList .
+     *
+     * @param taskList is to save into file.
+     * @throws IOException if there were errors loading the data to file
+     */
     public static void loadFile(TaskList taskList) throws IOException {
         File theDir = new File(folderName);
         File file = new File(FILE_FULL_NAME);
-
 
         // create directory if does not exist
         if (!theDir.exists()) {
@@ -80,10 +106,12 @@ public class FileStorage {
         int lines = 0;
         if (file.createNewFile()) {
             fileLoaded = true;
-            System.out.println("There is no record data file found");
+            System.out.println(MESSAGE_FILE_NOT_FOUND);
         } else {
             if (!fileLoaded) {
-                DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("MMM dd yyyy HH:mm", Locale.ENGLISH);
+                DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("MMM dd yyyy", Locale.ENGLISH);
+                DateTimeFormatter dateTimeFormat = DateTimeFormatter.ofPattern("MMM dd yyyy HH:mm", Locale.ENGLISH);
+                LocalDate date;
                 LocalDateTime dateTime;
                 //File reading from UTF-8 charset
                 Scanner s = new Scanner(file, StandardCharsets.UTF_8);
@@ -113,25 +141,33 @@ public class FileStorage {
                             taskDetails = taskDetails.replace(")", "");
                             int atSeparator = taskDetails.indexOf("/at");
                             String eventTime = taskDetails.substring(atSeparator + 4);
-                            dateTime = LocalDateTime.parse(eventTime, dateFormat);
                             taskDetails = taskDetails.substring(0, atSeparator);
-                            taskInFile += "event " + taskDetails
-                                    + " /at " + DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm").format(dateTime);
+                            try {
+                                dateTime = LocalDateTime.parse(eventTime, dateTimeFormat);
+                            } catch (DateTimeParseException e) {
+                                System.out.println(MESSAGE_INVALID_FILE_DATA);
+                                break;
+                            }
+                            taskInFile += "event " + taskDetails + " /at " + DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm").format(dateTime);
                             break;
                         case 'D':
                             taskDetails = taskDetails.replace("(by:", "/by");
                             taskDetails = taskDetails.replace(")", "");
                             int bySeparator = taskDetails.indexOf("/by");
                             String dueDate = taskDetails.substring(bySeparator + 4);
-                            dateTime = LocalDateTime.parse(dueDate, dateFormat);
+                            try {
+                                date = LocalDate.parse(dueDate, dateFormat);
+                            } catch (DateTimeParseException e) {
+                                System.out.println(MESSAGE_INVALID_FILE_DATA);
+                                break;
+                            }
                             taskDetails = taskDetails.substring(0, bySeparator);
-                            taskInFile += "deadline " + taskDetails
-                                    + " /by " + DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm").format(dateTime);
+                            taskInFile += "deadline " + taskDetails + " /by " + DateTimeFormatter.ofPattern("dd/MM/yyyy").format(date);
                             break;
                         }
 
-                        Parser parser = new Parser();
-                        Command command = parser.parseCommand(taskInFile);
+                        // sending converted data as command to program
+                        Command command = Parser.parseCommand(taskInFile);
                         command.execute(taskList, Duke.storage, Duke.ui);
 
                         int taskIndexInFile = lines - 3;

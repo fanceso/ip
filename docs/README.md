@@ -1,3 +1,4 @@
+<img src="https://www.ismartcom.com/hs-fs/hubfs/ai%20gif.gif?width=600&amp;name=ai%20gif.gif" alt="Duke" style="float:right;width:220px;height:auto;">
 # Duke Chat Bot User Guide  
   
 Duke is a **Command Line Interface** (CLI) app which allows you to store 3 types of task; *todo*, *deadline*, *event*.   
@@ -150,47 +151,52 @@ Terminating and exits the app.
   font-weight:normal;overflow:hidden;padding:10px 5px;word-break:normal;}
 .tg .tg-0pky{border-color:inherit;text-align:left;vertical-align:top}
 </style>
-<table class="tg">
+<table class="tg" style="undefined;table-layout: fixed; width: 683px">
+<colgroup>
+<col style="width: 80px">
+<col style="width: 326px">
+<col style="width: 277px">
+</colgroup>
 <thead>
   <tr>
-    <th class="tg-0pky"><span style="font-weight:bold">**Command**</span></th>
-    <th class="tg-0pky"><span style="font-weight:bold">**Format**</span></th>
-    <th class="tg-0pky"><span style="font-weight:bold">**Example**</span></th>
+    <th class="tg-0pky"><span style="font-weight:bold">Command</span></th>
+    <th class="tg-0pky"><span style="font-weight:bold">Format</span></th>
+    <th class="tg-0pky"><span style="font-weight:bold">Example</span></th>
   </tr>
 </thead>
 <tbody>
   <tr>
-    <td class="tg-0pky"><span style="font-style:italic">*todo*</span></td>
-    <td class="tg-0pky"><span style="color:#905;background-color:#ddd">`todo `</span></td>
+    <td class="tg-0pky"><span style="font-style:italic">todo</span></td>
+    <td class="tg-0pky"><span style="color:#905;background-color:#DDD">todo &lt;description&gt; </span></td>
     <td class="tg-0pky">todo submit assignment</td>
   </tr>
   <tr>
-    <td class="tg-0pky"><span style="font-style:italic">*event*</span></td>
-    <td class="tg-0pky"><span style="color:#905;background-color:#ddd">`event  /at </span><br><span style="color:#905;background-color:#ddd">`</span></td>
+    <td class="tg-0pky"><span style="font-style:italic">event</span></td>
+    <td class="tg-0pky"><span style="color:#905;background-color:#DDD">event &lt;description&gt; /at &lt;dd/MM/yyyy HH:mm&gt;</span><br></td>
     <td class="tg-0pky">event Tom's Wedding /at 04/10/2020 19:30</td>
   </tr>
   <tr>
-    <td class="tg-0pky"><span style="font-style:italic">*deadline*</span></td>
-    <td class="tg-0pky"><span style="color:#905;background-color:#ddd">`deadline  /by </span><br><span style="color:#905;background-color:#ddd">`</span></td>
+    <td class="tg-0pky"><span style="font-style:italic">deadline</span></td>
+    <td class="tg-0pky"><span style="color:#905;background-color:#DDD">deadline &lt;description&gt; /by &lt;dd/MM/yyyy&gt;</span></td>
     <td class="tg-0pky">deadline Final submission /by 03/10/2022</td>
   </tr>
   <tr>
-    <td class="tg-0pky"><span style="font-style:italic">*delete*</span></td>
-    <td class="tg-0pky"><span style="color:#905;background-color:#ddd">`delete `</span></td>
+    <td class="tg-0pky"><span style="font-style:italic">delete</span></td>
+    <td class="tg-0pky"><span style="color:#905;background-color:#DDD">delete &lt;index&gt;</span></td>
     <td class="tg-0pky">delete 1</td>
   </tr>
   <tr>
-    <td class="tg-0pky"><span style="font-style:italic">*done*</span></td>
-    <td class="tg-0pky"><span style="color:#905;background-color:#ddd">`done `</span></td>
+    <td class="tg-0pky"><span style="font-style:italic">done</span></td>
+    <td class="tg-0pky"><span style="color:#905;background-color:#DDD">done &lt;index&gt;</span></td>
     <td class="tg-0pky">done 3</td>
   </tr>
   <tr>
-    <td class="tg-0pky"><span style="font-style:italic">*find*</span></td>
-    <td class="tg-0pky"><span style="color:#905;background-color:#ddd">`find `</span></td>
+    <td class="tg-0pky"><span style="font-style:italic">find</span></td>
+    <td class="tg-0pky"><span style="color:#905;background-color:#DDD">find &lt;keyword&gt;</span></td>
     <td class="tg-0pky">find submission</td>
   </tr>
   <tr>
-    <td class="tg-0pky"><span style="font-style:italic">*bye*</span></td>
+    <td class="tg-0pky"><span style="font-style:italic">bye</span></td>
     <td class="tg-0pky"><span style="color:#905;background-color:#ddd">`bye`</span></td>
     <td class="tg-0pky">bye</td>
   </tr>

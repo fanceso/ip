@@ -143,10 +143,10 @@ Terminating and exits the app.
 ##  <h2 id="commands-summary"> Commands Summary </h2>
 | **Command** | **Format**                                      | **Example**                              |
 |-------------|-------------------------------------------------|------------------------------------------|
-| *todo*      | `todo `                                         | todo submit assignment                   |
+| *todo*      | `todo <description>`                                         | todo submit assignment                   |
 | *event*     | `event <description> /at <dd/MM/YYYY HH:mm>  `  | event Tom's Wedding /at 04/10/2020 19:30 |
 | *deadline*  | `deadline <description> /by <dd/MM/YYYY>  `     | deadline Final submission /by 03/10/2022 |
-| *delete*    | `delete `                                       | delete 1                                 |
-| *done*      | `done `                                         | done 3                                   |
-| *find*      | `find `                                         | find submission                          |
+| *delete*    | `delete <index>`                                       | delete 1                                 |
+| *done*      | `done <index>`                                         | done 3                                   |
+| *find*      | `find <keyword>`                                         | find submission                          |
 | *bye*       | `bye`                                           | bye                                      |

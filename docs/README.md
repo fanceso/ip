@@ -9,15 +9,14 @@ Designed for fast typer which allows you to **store**, **find**, and **mark** pe
 1. [Setting up](#setting-up)    
   
 2. [Features](#features)  
-      
-  2.1 [Adding To-do Task](#todo) [**todo**]  
-  2.2 [Adding Event Task](#event) [**event**]  
-  2.3 [Adding Task with a Deadline](#deadline) [**deadline**]  
-  2.4 [Listing out all your tasks](#list) [**list**]  
-  2.5 [Deleting a Task from list](#delete) [**delete**]  
-  2.6 [Completing a task](#done) [**done**]  
-  2.7 [Finding tasks](#find) [**find**]  
-  2.8 [Terminate the program](#bye) [**bye**]  
+    2.1 [Adding To-do Task](#todo) [**todo**]  
+    2.2 [Adding Event Task](#event) [**event**]  
+    2.3 [Adding Task with a Deadline](#deadline) [**deadline**]  
+    2.4 [Listing out all your tasks](#list) [**list**]  
+    2.5 [Deleting a Task from list](#delete) [**delete**]  
+    2.6 [Completing a task](#done) [**done**]  
+    2.7 [Finding tasks](#find) [**find**]  
+    2.8 [Terminate the program](#bye) [**bye**]  
   
 3. [Commands Summary](#commands-summary)  
 - - -  
@@ -50,6 +49,7 @@ Enter command:
 - - -  
   
 ### Features  
+<h5 id="todo"></h5>
 
 #### Adding To-do Task: `todo`  
 Adding a *To-Do* type of task to the list with its description.  
@@ -58,11 +58,12 @@ Format: todo <description>
 ```
 
 Example:  
-* `todo submission CS2113 project`  
-* `todo 3 math assignments`  
+* `todo submission CS2113 project`
+* `todo 3 math assignments`
 
 
 <h5 id="event"></h5><br />
+
 #### Adding Event Task: `event` 
 Adding a *Event* type of task to the list with its description, together with the event date and time.  
 Date and time entered must follow the following format accordingly. 

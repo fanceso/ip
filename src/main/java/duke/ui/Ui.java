@@ -10,21 +10,14 @@ import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.stream.Collectors;
 
-import static duke.common.Messages.MESSAGE_GOODBYE;
-import static duke.common.Messages.MESSAGE_INVALID_FILE;
-import static duke.common.Messages.MESSAGE_LIST_OUT;
-import static duke.common.Messages.MESSAGE_NO_SUCH_TASK;
-import static duke.common.Messages.MESSAGE_NO_TASK;
-import static duke.common.Messages.MESSAGE_NUMBER_OF_TASK;
-import static duke.common.Messages.MESSAGE_VERSION;
-import static duke.common.Messages.MESSAGE_WELCOME;
+import static duke.common.Messages.*;
 
+/** Text UI of the application. */
 public class Ui {
-    private Scanner in;
-    private PrintStream out;
-
     public static final String LINE = "-".repeat(Math.max(0, 59));
     public static final String INDENT = "\t";
+    private Scanner in;
+    private PrintStream out;
 
     public Ui() {
         this(new Scanner(System.in), System.out);
@@ -39,10 +32,16 @@ public class Ui {
         return INDENT;
     }
 
+    /** Draws line with dashes in terminal */
     public void drawlLine() {
         out.println(LINE);
     }
 
+    /**
+     * Gets the input from user and echo out the input back in given format
+     *
+     * @return fullInputLine which entered by user before line break
+     */
     public String getUserInput() {
         out.print("Enter command: ");
         String fullInputLine = in.nextLine();
@@ -57,15 +56,22 @@ public class Ui {
         drawlLine();
     }
 
+    /**
+     * Show the filtered result from the keyword used with find with given lists
+     *
+     * @param tasks   used for finding
+     * @param keyword used to match string which contains which is case sensitive
+     */
     public void showFindResult(ArrayList<Task> tasks, String keyword) {
         drawlLine();
 
+        // make sure there are tasks in list before filter
         if (tasks.size() > 0) {
-            ArrayList<Task> resultList = (ArrayList<Task>) tasks.stream()
-                    .filter((task) -> (task.description.contains(keyword)))
-                    .collect(Collectors.toList());
+            ArrayList<Task> resultList = (ArrayList<Task>) tasks.stream().filter((task) -> (task.description.contains(keyword))).collect(Collectors.toList());
+            // there are tasks matches keyword
             if (resultList.size() > 0) {
-                resultList.stream().forEach(out::println);
+                out.print(MESSAGE_FOUND);
+                resultList.forEach(out::println);
             } else {
                 out.println(MESSAGE_NO_SUCH_TASK + Parser.taskContent);
             }
@@ -77,6 +83,7 @@ public class Ui {
 
     }
 
+    /** Shows the invalid file message with the file's exact location in disk. */
     public void showInvalidFileMessage() {
         out.println(FileStorage.FILE_FULL_NAME);
         out.println(MESSAGE_INVALID_FILE);
@@ -92,6 +99,11 @@ public class Ui {
         drawlLine();
     }
 
+    /**
+     * Show the list of tasks in terminal
+     *
+     * @param taskList is the TaskList that used in Duke
+     */
     public void showTaskList(TaskList taskList) {
         drawlLine();
         if (taskList.getTaskListSize() > 0) {
@@ -100,7 +112,7 @@ public class Ui {
             for (i = 0; i < taskList.getTaskListSize(); i++) {
                 out.println(INDENT + String.format("%d.%s", i + 1, taskList.getTask(i)));
             }
-            out.println(String.format(MESSAGE_NUMBER_OF_TASK, i));
+            out.printf((MESSAGE_NUMBER_OF_TASK) + "%n", i);
         } else {
             out.println(MESSAGE_NO_TASK);
         }

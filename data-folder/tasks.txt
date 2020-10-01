@@ -3,5 +3,5 @@ Schedule Action Planner.
 T: To do | E: Event | D: Deadline
 	1.[E][✓] sleeping part (at: Jan 01 2021 01:01)
 	2.[D][✘] CS2113 (by: Oct 02 2020)
-	3.[T][✘] submit final code
-	4.[T][✓] 213
+	3.[T][✘] say goodbye to CS2113-ip
+	4.[D][✘] submit IP (by: Oct 02 2020)

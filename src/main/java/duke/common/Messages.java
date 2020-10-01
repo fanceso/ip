@@ -3,7 +3,7 @@ package duke.common;
 /** Container for user visible messages. */
 public class Messages {
 
-    public static final String MESSAGE_VERSION = "Version: 0.2";
+    public static final String MESSAGE_VERSION = "Version: DUKE 0.2";
     public static final String MESSAGE_WELCOME = "Hello! I'm Duke.\nWhat can I do for you?";
     public static final String MESSAGE_GOODBYE = "Bye. Hope to see you again soon!";
     public static final String MESSAGE_NO_TASK = "There is no task in the list. Please add new task!";
